@@ -117,7 +117,7 @@ def  signup():
 		charset = 'ISO-2022-JP'
 		subject = u'本登録用メール'
 		url =  hashlib.sha224(request.form['usrmail']).hexdigest()
-		text =  u'以下のリンクが本登録のためのURLとなります。\n' + 'http://localhost:5000/entry?makeshift=' + url + u'\nリンクをクリックすれば本登録完了となります。'
+		text =  u'以下のリンクが本登録のためのURLとなります。\n' + 'http://' + request.host + '/entry?makeshift=' + url + u'\nリンクをクリックすれば本登録完了となります。'
 
 		msg = MIMEText(text.encode(charset),"plain",charset)
 		msg['Subject'] = Header(subject, charset)
