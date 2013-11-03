@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block body %}
+	{% if data != NULL %}
+		<h2>Your ID is {{ data['usrid'] }}</h2>
+		<h2>Your PW is {{ data['usrpw'] }}</h2>
+		<h2>session logged_in is {{ session.logged_in }}</h2>
+		<h2>Setting!</h2>
+
+		<form action="{{ url_for('setting') }}">
+			<dl>
+				<dt>名前(漢字):
+					<dd><input type=text name=kanji />
+				<dt>名前(ローマ字):
+					<dd><input type=text name=rome/>
+				<dt>学校名:
+					<dd><input type=text name=school />
+				<dt>車の有無:
+					<dd><input type=radio name=havecar />
+				<dt>車番:
+					<dd><input type=text name=carnum />
+				<dt>ナンバーのひらがな:
+					<dd><input type=text name=carhira />
+				<dt>自己紹介:
+					<dd><input type=text name=introduce />
+					<dd><input type=submit value=Sign Up />
+			</dl>
+		</form>
+	{% endif %}
+{% endblock %}
+

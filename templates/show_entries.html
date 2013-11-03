@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block body %}
+	<ul class="entries">
+	<h1>乗る人募集</h1>
+	{% for driver in dri_ent %}
+	  <li><h2><a href="{{ url_for('user') }}?usercode={{ driver.query }}">{{ driver.usrid }}</a></h2>
+	  	<h2>{{ driver.destination }}</h2>
+	  	<h4>{{ driver.board }}</h4>
+	  	<h4>{{ driver.time }}</h4>
+	{% else %}
+	  <li><em>Unbelievable. No entries here so far</em>
+	{% endfor %}
+	</ul>
+	<h1>乗せる人募集</h1>
+	{% for rider in rid_ent %}
+	  <li><h2><a href="{{ url_for('user') }}?usercode={{ rider.query }}">{{ rider.usrid }}</a></h2>
+	  	<h2>{{ rider.destination }}</h2>
+	  	<h4>{{ rider.board }}</h4>
+	  	<h4>{{ rider.time }}</h4>
+	{% else %}
+	  <li><em>Unbelievable. No entries here so far</em>
+	{% endfor %}
+	</ul>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block body %}
+	{% if data != NULL %}
+	  <h2>Your ID is {{ data['usrid'] }}</h2>
+	  <h2>Your PW is {{ data['usrpw'] }}</h2>
+	{% endif %}
+	<h2>session logged_in is {{ session.logged_in }}</h2>
+	<h2>Welcome!</h2>
+
+	<a href="{{ url_for('driver') }}">Can you ride a people?</a>
+	<a href="{{ url_for('rider') }}">Do you want to ride a car?</a>
+
+	<h3><a href="{{ url_for('setting') }}">Setting</a></h3>
+	
+{% endblock %}

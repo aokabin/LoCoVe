@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+	{% if session.logged_in != NULL %}
+		<form action="{{ url_for('rider') }}" method=post>
+			<dl>
+				<dt>目的地:
+					<dd><input type=text name=destination />
+				<dt>乗車地:
+					<dd><input type=text name=board />
+				<dt>乗車予定時間:
+					<dd><input type=datetime-local name=boardtime />
+					<dd><input type=submit value=Add />
+			</dl>
+		</form>
+	{% endif %}
+{% endblock %}
