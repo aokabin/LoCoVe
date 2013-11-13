@@ -169,7 +169,7 @@ def entry():
 
 @app.route('/user')
 def user():
-	error = None
+	myinfo = False
 	if session.get('logged_in') == None:
 		abort(401)
 
@@ -178,12 +178,19 @@ def user():
 
 	entry = request.args.get('usercode', '')
 	page = col.find_one({'query' : entry})
-	if entry == '':
-		print 'entry none'
-		return render_template('mypage.html', error=error)
-	else :
-		session['usercode'] = request.args.get('usercode' , '')
-		return render_template('info.html', page=page)
+
+	if page== None:
+		# return render_template('mypage.html', error=error)
+		return redirect(url_for('mypage'))
+
+	if session.get('logged_in') == page['usrid']:
+		myinfo = True
+
+	if session.get('logged_in') in page['list']:
+		atended = True
+
+	session['usercode'] = request.args.get('usercode' , '')
+	return render_template('info.html', page=page, myinfo=myinfo, atended=atended)
 
 @app.route('/ask', methods=['POST'])
 def ask():
@@ -192,15 +199,23 @@ def ask():
 	db = g.con.locove
 	col = db.entries
 	session.pop('usercode', None)
-	for i in range(1,10):
-		ch = "rider"
-		key = ch + str(i)
-		update = col.find_one({'query' : request.form['fique'], key : {'$exists' : False}})
-		if update != None:
-			update[key] = session.get('logged_in')
-			col.save(update)
-			flash('Asked Your riding!')
-			return redirect(url_for('show_entries'))
+	# for i in range(1,10):
+	# 	ch = "rider"
+	# 	key = ch + str(i)
+	# 	update = col.find_one({'query' : request.form['fique'], key : {'$exists' : False}})
+	# 	if update != None:
+	# 		update[key] = session.get('logged_in')
+	# 		col.save(update)
+	# 		flash('Asked Your riding!')
+	# 		return redirect(url_for('show_entries'))
+	update = col.find_one({'query' : request.form['fique']})
+	if update != None:
+		ridelist = update['list']
+		ridelist.append(session.get('logged_in'))
+		update['list'] = ridelist
+		col.save(update)
+		flash('Asked Your riding!')
+		return redirect(url_for('show_entries'))
 	flash('Your Ask is faild!')
 	return redirect(url_for('show_entries'))
 
@@ -222,7 +237,14 @@ def rider():
 		db = g.con.locove
 		col = db.entries
 		que = hashlib.sha224((str(now) + str(session.get('logged_in')))).hexdigest()
-		col.insert({'usrid' : session.get('logged_in'), 'destination' : request.form['destination'], 'board' : request.form['board'], 'time' : request.form['boardtime'], 'timestamp' : now, 'query' : que, 'enttype' : 0})
+		col.insert({'usrid' : session.get('logged_in'), \
+					'destination' : request.form['destination'], \
+					'board' : request.form['board'], \
+					'time' : request.form['boardtime'], \
+					'timestamp' : now, \
+					'query' : que, \
+					'enttype' : 0, \
+					'list' : []})
 		# enttype = 0 rider 1 driver
 		return redirect(url_for('mypage'))
 	return render_template('rider.html', error=error)
@@ -238,7 +260,14 @@ def driver():
 		db = g.con.locove
 		col = db.entries
 		que = hashlib.sha224((str(now) + str(session.get('logged_in')))).hexdigest()
-		col.insert({'usrid' : session.get('logged_in'), 'destination' : request.form['destination'], 'board' : request.form['board'], 'time' : request.form['boardtime'], 'timestamp' : now, 'query' : que, 'enttype' : 1})
+		col.insert({'usrid' : session.get('logged_in'), \
+					'destination' : request.form['destination'], \
+					'board' : request.form['board'], \
+					'time' : request.form['boardtime'], \
+					'timestamp' : now, \
+					'query' : que, \
+					'enttype' : 1, \
+					'list' : []})
 		return redirect(url_for('mypage'))
 	return render_template('driver.html', error=error)
 
