@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
-	{% if session.logged_in != NULL %}
+	{% if session.logged_in != NULL %}	
+		<h1>乗るせてくれる人募集</h1>	
 		<form action="{{ url_for('rider') }}" method=post>
 			<dl>
 				<dt>目的地:

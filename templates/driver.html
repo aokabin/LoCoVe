@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 	{% if session.logged_in != NULL %}
+		<h1>乗る人募集</h1>
 		<form action="{{ url_for('driver') }}" method=post>
 			<dl>
 				<dt>目的地:

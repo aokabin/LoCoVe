@@ -4,10 +4,14 @@
 <div class=page>
 	<h1>LoCoVe</h1>
 	<div class="metanav">
+	 <a href="{{ url_for('show_entries') }}">TOP</a>
 	{% if not session.logged_in %}
 	 <a href="{{ url_for('login') }}">log in</a>
 	 <a href="{{ url_for('signup') }}">Sign Up</a>
 	{% else %}
+	 <a href="{{ url_for('mypage') }}">My page</a>
+	 <a href="{{ url_for('rider') }}">乗せて！</a>
+	 <a href="{{ url_for('driver') }}">乗せるよ！</a>
 	 <a href="{{ url_for('logout') }}">log out</a>
 	{% endif %}
 	</div>
